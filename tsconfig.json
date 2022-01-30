@@ -16,6 +16,12 @@
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
         "importHelpers": true,
+        "isolatedModules": true,
+        "removeComments": true,
+
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
         
         "strict": true,
         "noImplicitAny": false,
@@ -27,8 +33,7 @@
         "alwaysStrict": true,
         "noUncheckedIndexedAccess": true,
         "noImplicitOverride": true,
-        "noPropertyAccessFromIndexSignature": true,
-        "forceConsistentCasingInFileNames": true
+        "noPropertyAccessFromIndexSignature": true
     },
     "files": [
         "./src/main.ts"
