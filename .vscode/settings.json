@@ -1,48 +1,52 @@
 {
-    "editor.formatOnSave": true,
-    "files.autoSave": "onFocusChange",
-    "files.watcherExclude": {
-        "**/.git/objects/**": true,
-        "**/node_modules/**": true,
-        ".tmp": true
+  "editor.formatOnSave": true,
+  "files.autoSave": "onFocusChange",
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    ".tmp": true
+  },
+  "files.associations": {
+    "*.resjson": "json"
+  },
+  "search.exclude": {
+    ".tmp": true,
+    "typings": true,
+    "**/.yarn": true,
+    "**/.pnp.*": true
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/pbiviz.json"
+      ],
+      "url": "./node_modules/powerbi-visuals-api/schema.pbiviz.json"
     },
-    "files.associations": {
-        "*.resjson": "json"
+    {
+      "fileMatch": [
+        "/capabilities.json"
+      ],
+      "url": "./node_modules/powerbi-visuals-api/schema.capabilities.json"
     },
-    "search.exclude": {
-        ".tmp": true,
-        "typings": true
-    },
-    "json.schemas": [
-        {
-            "fileMatch": [
-                "/pbiviz.json"
-            ],            
-            "url": "./node_modules/powerbi-visuals-api/schema.pbiviz.json"
-        },
-        {
-            "fileMatch": [
-                "/capabilities.json"
-            ],            
-            "url": "./node_modules/powerbi-visuals-api/schema.capabilities.json"
-        },
-        {
-            "fileMatch": [
-                "/dependencies.json"
-            ],            
-            "url": "./node_modules/powerbi-visuals-api/schema.dependencies.json"
-        }        
-    ],   
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
+    {
+      "fileMatch": [
+        "/dependencies.json"
+      ],
+      "url": "./node_modules/powerbi-visuals-api/schema.dependencies.json"
+    }
+  ],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
