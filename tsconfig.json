@@ -13,7 +13,8 @@
             "dom"
         ],
 
-        "jsx": "react-jsxdev",
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
         "importHelpers": true,
         
         "strict": true,
