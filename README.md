@@ -11,3 +11,9 @@ I don't know what I am doing.
     - Which means no `twin.macro`
   - For now, have to fallback on framework-agnostic version of `emotion`
     - It is good enough, & still superior to having to write CSS externally
+
+## Experiments
+
+The Code world changes very fast. Before you know it, you are obsolete. I will be trying out `twind` instead of `twin.macro` + `emotion`. It purports to be framework-agnostic, & doesn't need a compile step. Which is useful here since I cannot modify the webpack config. If it turns out to be better than what I was using before... welp `interpause-components` gonna need a major version revision...
+
+hey holy crap twind works

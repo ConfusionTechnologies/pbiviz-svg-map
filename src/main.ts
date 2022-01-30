@@ -1,5 +1,7 @@
 import powerbi from 'powerbi-visuals-api'
-// powerbi's typing is surprisingly malformed
+// powerbi's typing is surprisingly malformed for smth released by microsoft
+// also given microsoft is literally the company that made typescript
+// like seriously what is with the nested namespaces
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 import IVisual = powerbi.extensibility.visual.IVisual
@@ -10,6 +12,13 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 
 import { createElement, JSX, render } from 'preact'
 import App from './app'
+
+import { setup as setupTwind } from '@twind/preact'
+setupTwind({
+  props: {
+    css: false,
+  },
+})
 
 export class Visual implements IVisual {
   private rootCont: HTMLElement

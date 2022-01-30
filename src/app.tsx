@@ -1,15 +1,19 @@
-import { css } from '@emotion/css'
+import { css, tw, apply } from 'twind/css'
+
+const testClass = css`
+  ${apply`bg-black`}
+
+  p {
+    ${apply`text-white lg:(mx-auto inset-x-auto) `}
+    width: 50px
+  }
+`
 
 function App() {
   return (
-    <p
-      class={css`
-        font-weight: bold;
-        color: blue;
-      `}
-    >
-      Hello world!
-    </p>
+    <div class={tw(testClass)}>
+      <p>Hello world!</p>
+    </div>
   )
 }
 
