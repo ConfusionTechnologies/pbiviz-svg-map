@@ -1,13 +1,9 @@
 {
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
-    "files.eol": "\n",
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/node_modules/**": true,
-        ".tmp": true
-    },
-    "files.exclude": {
         ".tmp": true
     },
     "files.associations": {
@@ -36,5 +32,17 @@
             ],            
             "url": "./node_modules/powerbi-visuals-api/schema.dependencies.json"
         }        
-    ]    
+    ],   
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }
