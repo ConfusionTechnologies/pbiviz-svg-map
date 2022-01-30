@@ -12,12 +12,14 @@
             "es2015",
             "dom"
         ],
-        "jsx": "preserve",
+
+        "jsx": "react-jsxdev",
+        "importHelpers": true,
         
         "strict": true,
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "strictNullChecks": true,
-        "strictFunctionTypes": true,
+        "strictFunctionTypes": false,
         "strictBindCallApply": true,
         "strictPropertyInitialization": true,
         "noImplicitThis": true,
