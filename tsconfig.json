@@ -30,6 +30,6 @@
         "forceConsistentCasingInFileNames": true
     },
     "files": [
-        "./src/visual.ts"
+        "./src/main.ts"
     ]
 }
