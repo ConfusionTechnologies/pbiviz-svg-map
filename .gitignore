@@ -142,3 +142,9 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# Webpack
+webpack.statistics.*.html
+
+# pbiviz
+/.tmp
