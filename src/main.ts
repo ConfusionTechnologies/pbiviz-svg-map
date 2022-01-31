@@ -4,32 +4,41 @@ import powerbi from 'powerbi-visuals-api'
 // like seriously what is with the nested namespaces
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
-import IVisual = powerbi.extensibility.visual.IVisual
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions
-import VisualObjectInstance = powerbi.VisualObjectInstance
-import DataView = powerbi.DataView
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject
+import IVisual = powerbi.extensibility.visual.IVisual
 
-import { createElement, JSX, render } from 'preact'
-import App from './app'
-
+import { createElement, render, VNode } from 'preact'
 import { setup as setupTwind } from '@twind/preact'
-setupTwind({
-  props: {
-    css: false,
-  },
-})
+import d3 from 'd3'
+
+import App from './App'
+import Usage from './Usage'
+import { VisualSettings } from './settings'
 
 export class Visual implements IVisual {
-  private rootCont: HTMLElement
-  private rootElem: JSX.Element
+  private rootElem: HTMLElement
+  private settings?: VisualSettings
 
   constructor(options: VisualConstructorOptions) {
-    this.rootCont = options.element
-    this.rootElem = createElement(App, {})
+    this.rootElem = options.element
+    setupTwind({
+      props: {
+        css: false,
+      },
+    })
 
-    render(this.rootElem, this.rootCont)
+    render(createElement(Usage, {}), this.rootElem)
   }
 
-  public update(options: VisualUpdateOptions) {}
+  update(options: VisualUpdateOptions) {
+    this.settings = VisualSettings.parse(options.dataViews[0]!)
+    render(createElement(App, options), this.rootElem)
+  }
+
+  enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions) {
+    return VisualSettings.enumerateObjectInstances(
+      this.settings || VisualSettings.getDefault(),
+      options,
+    )
+  }
 }

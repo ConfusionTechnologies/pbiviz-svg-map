@@ -1,18 +1,23 @@
-import { css, tw, apply } from 'twind/css'
+import powerbi from 'powerbi-visuals-api'
+import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 
-const testClass = css`
-  ${apply`bg-black`}
+import Circle from './Circle'
+import { VisualSettings } from './settings'
 
-  p {
-    ${apply`text-white lg:(mx-auto inset-x-auto) `}
-    width: 50px
-  }
-`
+function App(opt: VisualUpdateOptions) {
+  const dataView = opt.dataViews[0]
+  const { width, height } = opt.viewport
+  const size = Math.min(width, height)
 
-function App() {
+  const settings: VisualSettings = VisualSettings.parse(dataView!)
+
   return (
-    <div class={tw(testClass)}>
-      <p>Hello world!</p>
+    <div tw={`absolute h-[${size}px] w-[${size}px] inset-0 m-auto`}>
+      <Circle
+        tw={`border-[${settings.circle.circleThickness}px] bg-[${settings.circle.circleColor}]`}
+        label={dataView?.metadata.columns[0]?.displayName}
+        value={dataView?.single?.value.toString()}
+      ></Circle>
     </div>
   )
 }

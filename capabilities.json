@@ -1,22 +1,18 @@
 {
   "dataRoles": [
     {
-      "displayName": "Category Data",
-      "name": "category",
-      "kind": "Grouping"
-    },
-    {
       "displayName": "Measure Data",
       "name": "measure",
       "kind": "Measure"
     }
   ],
   "objects": {
-    "dataPoint": {
-      "displayName": "Data colors",
+    "circle": {
+      "displayName": "Circle",
       "properties": {
-        "defaultColor": {
-          "displayName": "Default color",
+        "circleColor": {
+          "displayName": "Color",
+          "description": "The fill color of the circle.",
           "type": {
             "fill": {
               "solid": {
@@ -25,34 +21,11 @@
             }
           }
         },
-        "showAllDataPoints": {
-          "displayName": "Show all",
+        "circleThickness": {
+          "displayName": "Thickness",
+          "description": "The circle thickness.",
           "type": {
-            "bool": true
-          }
-        },
-        "fill": {
-          "displayName": "Fill",
-          "type": {
-            "fill": {
-              "solid": {
-                "color": true
-              }
-            }
-          }
-        },
-        "fillRule": {
-          "displayName": "Color saturation",
-          "type": {
-            "fill": {}
-          }
-        },
-        "fontSize": {
-          "displayName": "Text Size",
-          "type": {
-            "formatting": {
-              "fontSize": true
-            }
+            "numeric": true
           }
         }
       }
@@ -60,24 +33,15 @@
   },
   "dataViewMappings": [
     {
-      "categorical": {
-        "categories": {
-          "for": {
-            "in": "category"
-          },
-          "dataReductionAlgorithm": {
-            "top": {}
+      "conditions": [
+        {
+          "measure": {
+            "max": 1
           }
-        },
-        "values": {
-          "select": [
-            {
-              "bind": {
-                "to": "measure"
-              }
-            }
-          ]
         }
+      ],
+      "single": {
+        "role": "measure"
       }
     }
   ]
