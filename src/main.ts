@@ -7,9 +7,8 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions
 import IVisual = powerbi.extensibility.visual.IVisual
 
-import { createElement, render, VNode } from 'preact'
+import { createElement, render } from 'preact'
 import { setup as setupTwind } from '@twind/preact'
-import d3 from 'd3'
 
 import App from './App'
 import Usage from './Usage'

@@ -2,10 +2,16 @@ import { dataViewObjectsParser } from 'powerbi-visuals-utils-dataviewutils'
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser
 
 export class CircleSettings {
-  public circleColor: string = 'white'
-  public circleThickness: number = 2
+  circleColor: string = 'white'
+  circleThickness: number = 2
+}
+
+export class MapSettings {
+  topLeft: string = '50NMK0000099999'
+  btmRight: string = '50NMK9999900000'
 }
 
 export class VisualSettings extends DataViewObjectsParser {
-  public circle: CircleSettings = new CircleSettings()
+  circle = new CircleSettings()
+  map = new MapSettings()
 }

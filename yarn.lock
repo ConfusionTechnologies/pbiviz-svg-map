@@ -3646,6 +3646,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mgrs@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "mgrs@npm:1.0.0"
+  checksum: 98b9fa3caff9986868344567996f8dcc833f939c2e140507a00e2ce9a96ef7eaeb81933a749222a2b7bcbc1a4bb6ada6120dda3a5b6af6d72ae332d8990956b9
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^4.0.0, micromatch@npm:^4.0.2, micromatch@npm:^4.0.4":
   version: 4.0.4
   resolution: "micromatch@npm:4.0.4"
@@ -4182,6 +4189,7 @@ __metadata:
     "@twind/preact": ^1.0.5
     "@types/d3": ^7.1.0
     d3: 5.12.0
+    mgrs: ^1.0.0
     powerbi-visuals-api: ~3.8.0
     powerbi-visuals-tools: ^4.0.4
     powerbi-visuals-utils-dataviewutils: 2.2.1
@@ -4191,8 +4199,6 @@ __metadata:
     twind: ^0.16.16
     typescript: ^4.5.5
   dependenciesMeta:
-    "@yarnpkg/sdks":
-      optional: true
     prettier:
       optional: true
   languageName: unknown

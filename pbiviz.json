@@ -2,7 +2,7 @@
   "visual": {
     "name": "pbiviz-svg-map",
     "displayName": "SVGMap",
-    "guid": "testViz1E451ED4D8324E2B9CB3AFD0C5077CEA",
+    "guid": "SVGMap1E451ED4D8324E2B9CB3AFD0C5077CEA",
     "visualClassName": "Visual",
     "version": "0.1.0",
     "description": "currently just scatterplot with axis-scaling backdrop",
@@ -13,7 +13,7 @@
   "author": { "name": "John-Henry Lim", "email": "hyphen@interpause.dev" },
   "assets": { "icon": "assets/icon.png" },
   "externalJS": [],
-  "style": "style/visual.less",
+  "style": "",
   "capabilities": "capabilities.json",
   "dependencies": null,
   "stringResources": []

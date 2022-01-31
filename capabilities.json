@@ -1,9 +1,25 @@
 {
   "dataRoles": [
     {
-      "displayName": "Measure Data",
-      "name": "measure",
-      "kind": "Measure"
+      "displayName": "Map Image",
+      "name": "map_image",
+      "kind": "Grouping",
+      "description": "Image chunks & ids"
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "table": {
+        "rows": {
+          "select": [
+            {
+              "for": {
+                "in": "map_image"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "objects": {
@@ -29,20 +45,27 @@
           }
         }
       }
-    }
-  },
-  "dataViewMappings": [
-    {
-      "conditions": [
-        {
-          "measure": {
-            "max": 1
+    },
+    "map": {
+      "displayName": "Map",
+      "properties": {
+        "topLeft": {
+          "displayName": "Top Left MGRS",
+          "description": "Top Left MGRS",
+          "type": {
+            "text": true
+          }
+        },
+        "btmRight": {
+          "displayName": "Bottom Right MGRS",
+          "description": "Bottom Right MGRS",
+          "type": {
+            "text": true
           }
         }
-      ],
-      "single": {
-        "role": "measure"
       }
     }
-  ]
+  },
+  "supportsLandingPage": true,
+  "supportsEmptyDataView": true
 }

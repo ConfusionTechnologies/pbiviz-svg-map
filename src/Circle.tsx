@@ -1,5 +1,5 @@
 import { ComponentProps } from 'preact'
-import { tw } from 'twind/css'
+import { apply } from 'twind/css'
 
 export interface CircleProps extends ComponentProps<'div'> {
   label?: string
@@ -7,7 +7,7 @@ export interface CircleProps extends ComponentProps<'div'> {
 }
 
 function Circle({ label = '', value = '', tw: tw1, ...props }: CircleProps) {
-  const style = [tw`relative border(1 black) rounded-1/2 w-full h-full`, tw1]
+  const style = [apply`relative border(1 black) rounded-1/2 w-48 h-48`, tw1]
   return (
     <div tw={style} {...props}>
       <p tw='relative text(center lg) font-bold -top-7 m-0 mt-[50%]'>
