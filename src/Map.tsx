@@ -2,6 +2,8 @@ import powerbi from 'powerbi-visuals-api'
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 
 import { ComponentProps } from 'preact'
+import { useLayoutEffect, useRef } from 'preact/hooks'
+import * as d3 from 'd3'
 import mgrs from 'mgrs'
 
 import { VisualSettings } from './settings'
@@ -20,7 +22,7 @@ function mergeSVG(rows: [number, string][] | [string, number][]) {
     .join('')
 }
 
-export interface MapProps extends ComponentProps<'img'> {
+export interface MapProps extends ComponentProps<'svg'> {
   opt: VisualUpdateOptions
   /** [x1, y1, x2, y2] where x1, y1 is top left, x2, y2 is bottom right */
   zoomRect?: [number, number, number, number]
@@ -30,6 +32,8 @@ function Map({ opt, zoomRect, ...props }: MapProps) {
   const dataView = opt.dataViews[0]
   const settings: VisualSettings = VisualSettings.parse(dataView!)
   const imgURI = mergeSVG(dataView?.table?.rows as [number, string][])
+
+  const graphRef = useRef<SVGSVGElement>(null)
 
   try {
     // Warning: it is [long, lat]
@@ -41,10 +45,52 @@ function Map({ opt, zoomRect, ...props }: MapProps) {
     return <p>Invalid MGRS under Format &gt; Map</p>
   }
 
-  if (zoomRect) {
-  }
+  useLayoutEffect(() => {
+    const graphElem = graphRef.current
+    if (!graphElem) return
+    const svg = d3.select(graphElem)
+    svg.selectAll('*').remove()
+    const g = svg.append('g')
 
-  return <img src={imgURI} {...props}></img>
+    g.append('rect')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('fill', 'white')
+
+    g.append('rect')
+      .attr('x', '80')
+      .attr('y', '45')
+      .attr('width', '1120')
+      .attr('height', '630')
+      .attr('fill', 'yellow')
+
+    g.append('image')
+      .attr('href', imgURI)
+      .attr('x', '80')
+      .attr('y', '45')
+      .attr('width', '1120')
+      .attr('height', '630')
+
+    const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
+    g.call(zoom)
+    svg.on('click', reset)
+
+    function reset() {
+      g.transition()
+        .duration(750)
+        .call(
+          zoom.transform,
+          d3.zoomIdentity,
+          d3.zoomTransform(g.node()!).invert([640, 360]),
+        )
+    }
+
+    function zoomed({ transform }) {
+      g.attr('transform', transform).attr('stroke-width', 1 / transform.k)
+    }
+  }, [graphRef.current])
+
+  return <svg ref={graphRef} viewBox='0 0 1280 720' {...props}></svg>
 }
 
 export default Map
