@@ -5,6 +5,12 @@
       "name": "map_image",
       "kind": "Grouping",
       "description": "Image chunks & ids"
+    },
+    {
+      "displayName": "Coords",
+      "name": "coords",
+      "kind": "Grouping",
+      "description": "measures should be named 'location', 'msg', 'icon'"
     }
   ],
   "dataViewMappings": [
@@ -15,6 +21,19 @@
             {
               "for": {
                 "in": "map_image"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "table": {
+        "rows": {
+          "select": [
+            {
+              "for": {
+                "in": "coords"
               }
             }
           ]

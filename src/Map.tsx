@@ -14,7 +14,7 @@ function checkOrder(
   return typeof rows[0]![0] === 'number'
 }
 
-function mergeSVG(rows: [number, string][] | [string, number][]) {
+function mergeImgChunks(rows: [number, string][] | [string, number][]) {
   const i = +!checkOrder(rows)
   return rows
     .sort((a, b) => a[i] - b[i])
@@ -31,7 +31,13 @@ export interface MapProps extends ComponentProps<'svg'> {
 function Map({ opt, zoomRect, ...props }: MapProps) {
   const dataView = opt.dataViews[0]
   const settings: VisualSettings = VisualSettings.parse(dataView!)
-  const imgURI = mergeSVG(dataView?.table?.rows as [number, string][])
+  const imgChunks = dataView?.table?.rows
+
+  // use placeholder if no img given
+  const imgUri =
+    imgChunks && imgChunks[0]
+      ? mergeImgChunks(imgChunks as any)
+      : 'https://upload.wikimedia.org/wikipedia/commons/6/6f/World_Map.svg'
 
   const graphRef = useRef<SVGSVGElement>(null)
 
@@ -41,8 +47,7 @@ function Map({ opt, zoomRect, ...props }: MapProps) {
     const [x1, y1] = mgrs.toPoint(settings.map.topLeft)
     const [x2, y2] = mgrs.toPoint(settings.map.btmRight)
   } catch (e) {
-    console.error('Invalid MGRS under Format > Map')
-    return <p>Invalid MGRS under Format &gt; Map</p>
+    throw 'Invalid MGRS under Format > Map'
   }
 
   useLayoutEffect(() => {
@@ -65,7 +70,7 @@ function Map({ opt, zoomRect, ...props }: MapProps) {
       .attr('fill', 'yellow')
 
     g.append('image')
-      .attr('href', imgURI)
+      .attr('href', imgUri)
       .attr('x', '80')
       .attr('y', '45')
       .attr('width', '1120')
