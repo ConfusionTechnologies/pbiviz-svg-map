@@ -1,28 +1,8 @@
 import powerbi from 'powerbi-visuals-api'
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 
-import Circle from './Circle'
 import Map from './Map'
 import { VisualSettings } from './settings'
-
-function checkOrder(
-  rows: [number, string][] | [string, number][],
-): rows is [number, string][] {
-  return typeof rows[0]![0] === 'number'
-}
-
-function mergeSVG(rows: [number, string][] | [string, number][]) {
-  if (checkOrder(rows))
-    return rows
-      .sort(([a], [b]) => a - b)
-      .map(([, c]) => c)
-      .join('')
-  else
-    return rows
-      .sort(([, a], [, b]) => a - b)
-      .map(([c]) => c)
-      .join('')
-}
 
 function App(opt: VisualUpdateOptions) {
   // console.log(opt)
@@ -39,27 +19,15 @@ function App(opt: VisualUpdateOptions) {
   // what exactly is a dataView? its not in the docs for sure
   // its almost as if they forced a crusty C# developer to use typescript
   const dataView = opt.dataViews[0]
-  const { width, height } = opt.viewport
-  const size = Math.min(width, height)
 
   const settings: VisualSettings = VisualSettings.parse(dataView!)
 
   return (
-    <>
-      <div tw={`absolute h-[${size}px] w-[${size}px] inset-0 m-auto`}>
-        <Circle
-          tw={`
-            h-full
-            w-full
-            border-[${settings.circle.circleThickness}px]
-            bg-[${settings.circle.circleColor}]
-          `}
-          label={dataView?.metadata.columns[0]?.displayName ?? 'empty'}
-          value={dataView?.single?.value.toString() ?? 'lmao'}
-        ></Circle>
+    <div tw={`absolute inset-0 m-auto bg-black`}>
+      <div tw='h-full w-full p-0'>
+        <Map opt={opt} tw='h-full w-full'></Map>
       </div>
-      <Map opt={opt}></Map>
-    </>
+    </div>
   )
 }
 
