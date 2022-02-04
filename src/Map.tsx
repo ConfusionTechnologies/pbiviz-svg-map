@@ -1,24 +1,22 @@
-import powerbi from 'powerbi-visuals-api'
-import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
-
-import { ComponentProps } from 'preact'
-import { useLayoutEffect, useRef } from 'preact/hooks'
 import * as d3 from 'd3'
 import mgrs from 'mgrs'
 
-import { VisualSettings } from './settings'
+import { ComponentProps } from 'preact'
+import { useLayoutEffect, useRef } from 'preact/hooks'
+import { useStore } from '@nanostores/preact'
+
+import { vizConfig, vizData } from './store/powerBI'
 
 export interface MapProps extends ComponentProps<'svg'> {
-  opt: VisualUpdateOptions
   /** [x1, y1, x2, y2] where x1, y1 is top left, x2, y2 is bottom right */
   zoomRect?: [number, number, number, number]
   imgUrl?: string
 }
 
-function Map({ opt, zoomRect, imgUrl, ...props }: MapProps) {
+function Map({ zoomRect, imgUrl, ...props }: MapProps) {
   try {
-    const dataView = opt.dataViews[0]!
-    const settings = VisualSettings.parse<VisualSettings>(dataView)
+    const dataView = useStore(vizData)
+    const settings = useStore(vizConfig)
 
     // use placeholder if no img given
     const imgSrc =

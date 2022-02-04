@@ -12,6 +12,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nanostores/preact@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@nanostores/preact@npm:0.1.3"
+  peerDependencies:
+    nanostores: ^0.5.2
+    preact: ">=10.0.0"
+  checksum: ae5ba0ecdbeb6edc316e10cd41bdd0e21c19aa8421191237e647cccc89cf5ed050e483d3c7dda3345d3778ffb07075260b4dc868e448b1634e34f67974d065e8
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -4212,6 +4222,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pbiviz-svg-map@workspace:."
   dependencies:
+    "@nanostores/preact": ^0.1.3
     "@twind/preact": ^1.0.5
     "@types/d3": ^7.1.0
     d3: ^7.3.0

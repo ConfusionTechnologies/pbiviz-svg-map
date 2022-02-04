@@ -1,9 +1,5 @@
 import powerbi from 'powerbi-visuals-api'
-/*
-powerbi's typing is surprisingly malformed given that
-microsoft is the main backer of typescript.
-like seriously what is with the nested namespaces
-*/
+
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions
@@ -13,8 +9,8 @@ import { createElement, render } from 'preact'
 import { setup as setupTwind } from '@twind/preact'
 
 import App from './App'
-import Usage from './Usage'
 import { VisualSettings } from './settings'
+import { vizData, vizConfig } from './store/powerBI'
 
 export class Visual implements IVisual {
   private rootElem: HTMLElement
@@ -28,14 +24,25 @@ export class Visual implements IVisual {
       },
     })
 
-    render(createElement(Usage, {}), this.rootElem)
+    // yknow that both React & Preact creates an async shadow dom right?
+    render(createElement(App, {}), this.rootElem)
   }
 
   update(options: VisualUpdateOptions) {
-    console.log('Updating')
-    this.settings = VisualSettings.parse(options.dataViews[0]!)
-    render(createElement(App, options), this.rootElem)
-    console.log('Updated')
+    /*
+    from observation, dataViews[0] always exist
+    from research, powerBI at some point intended for multiple dataViews
+    to be possible, but it never happened. So assuming 1 dataView is fine.
+    */
+    const dataView = options.dataViews[0]
+    if (!dataView) throw 'DataView missing!'
+
+    const settings = VisualSettings.parse<VisualSettings>(dataView)
+    this.settings = settings
+
+    // update global state, Preact container will pick up on this
+    vizConfig.set(settings)
+    vizData.set(dataView)
   }
 
   enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions) {
