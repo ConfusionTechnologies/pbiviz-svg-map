@@ -3915,6 +3915,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanostores@npm:^0.5.10":
+  version: 0.5.10
+  resolution: "nanostores@npm:0.5.10"
+  checksum: ee47d67064b4bec2044c1767deec66f3cd7c449f5f74c7425c87b78403b9f26bb5af6c3575fa2bba9d8f62f7a6318298c029f3a3ee095c11c4ebb6577d6881c5
+  languageName: node
+  linkType: hard
+
 "native-request@npm:^1.0.5":
   version: 1.1.0
   resolution: "native-request@npm:1.1.0"
@@ -4209,14 +4216,17 @@ __metadata:
     "@types/d3": ^7.1.0
     d3: ^7.3.0
     mgrs: ^1.0.0
+    nanostores: ^0.5.10
     powerbi-visuals-api: ~3.8.0
     powerbi-visuals-tools: ^4.0.4
     powerbi-visuals-utils-dataviewutils: 2.2.1
     preact: ^10.6.5
+    preact-feather: ^4.2.1
     prettier: ^2.5.1
     tslib: ^2.3.1
     twind: ^0.16.16
     typescript: ^4.5.5
+    wouter-preact: ^2.8.0-alpha.2
   dependenciesMeta:
     prettier:
       optional: true
@@ -4424,6 +4434,15 @@ __metadata:
     lodash.clonedeep: 4.5.0
     webpack-sources: 1.4.3
   checksum: 09928de9988b9a92aa7e51b4f3ce8572a4d604434f552be40aecf191508bd4805c4798c7c12b1143a6d381f21bbd44d5d1cae340230c83a7bb914f29ab40ad50
+  languageName: node
+  linkType: hard
+
+"preact-feather@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "preact-feather@npm:4.2.1"
+  peerDependencies:
+    preact: ^10.0.0
+  checksum: 30777ef1defa9c6262cca9bbd56daa1ab2e9ffb5736ae5545fb2ea82e95f7274b6e855c7e72cd74455c476e25886979a1fc3c962f8d5d4eaca60d56cce32eb63
   languageName: node
   linkType: hard
 
@@ -5721,6 +5740,15 @@ __metadata:
   dependencies:
     string-width: ^1.0.2 || 2 || 3 || 4
   checksum: d5fc37cd561f9daee3c80e03b92ed3e84d80dde3365a8767263d03dacfc8fa06b065ffe1df00d8c2a09f731482fcacae745abfbb478d4af36d0a891fad4834d3
+  languageName: node
+  linkType: hard
+
+"wouter-preact@npm:^2.8.0-alpha.2":
+  version: 2.8.0-alpha.2
+  resolution: "wouter-preact@npm:2.8.0-alpha.2"
+  peerDependencies:
+    preact: ^10.0.0
+  checksum: 81af1bbfcf8eecd69a6332411952fc6d964629ab8627865481fa2edd0e10c4db93f7da15973163a620427aac6ab54be80f94b08a856980c242a666cb12773c33
   languageName: node
   linkType: hard
 

@@ -14,11 +14,14 @@
     "@twind/preact": "^1.0.5",
     "d3": "^7.3.0",
     "mgrs": "^1.0.0",
+    "nanostores": "^0.5.10",
     "powerbi-visuals-api": "~3.8.0",
     "powerbi-visuals-utils-dataviewutils": "2.2.1",
     "preact": "^10.6.5",
+    "preact-feather": "^4.2.1",
     "tslib": "^2.3.1",
-    "twind": "^0.16.16"
+    "twind": "^0.16.16",
+    "wouter-preact": "^2.8.0-alpha.2"
   },
   "devDependencies": {
     "@types/d3": "^7.1.0",
