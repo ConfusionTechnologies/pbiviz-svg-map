@@ -43,7 +43,7 @@ export default function App() {
   return (
     <div tw='absolute inset-0 h-[100vh] w-[100vw]'>
       <Navbar
-        tw='absolute right-1 top-1 opacity-10 hover:opacity-100 transition-opacity'
+        tw='absolute right-1 top-16 opacity-10 hover:opacity-100 transition-opacity'
         options={NavOptions}
         hook={[location, setLocation]}
       ></Navbar>

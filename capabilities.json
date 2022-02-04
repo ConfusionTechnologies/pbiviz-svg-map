@@ -1,16 +1,40 @@
 {
   "dataRoles": [
     {
-      "displayName": "Map Image",
-      "name": "map_image",
+      "displayName": "Names",
+      "name": "x_name",
       "kind": "Grouping",
-      "description": "Image chunks & ids"
+      "description": "Names of each row"
     },
     {
-      "displayName": "Coords",
-      "name": "coords",
+      "displayName": "Locations",
+      "name": "x_loc",
       "kind": "Grouping",
-      "description": "measures should be named 'location', 'msg', 'icon'"
+      "description": "MGRS locations of each row"
+    },
+    {
+      "displayName": "Sizes",
+      "name": "x_size",
+      "kind": "Grouping",
+      "description": "Size of each row"
+    },
+    {
+      "displayName": "Description",
+      "name": "x_desc",
+      "kind": "Grouping",
+      "description": "Hover description of each row"
+    },
+    {
+      "displayName": "Time",
+      "name": "x_time",
+      "kind": "Grouping",
+      "description": "Timestamp of each row"
+    },
+    {
+      "displayName": "Color",
+      "name": "x_color",
+      "kind": "Grouping",
+      "description": "Color of each row"
     }
   ],
   "dataViewMappings": [
@@ -20,7 +44,32 @@
           "select": [
             {
               "for": {
-                "in": "map_image"
+                "in": "x_name"
+              }
+            },
+            {
+              "for": {
+                "in": "x_loc"
+              }
+            },
+            {
+              "for": {
+                "in": "x_size"
+              }
+            },
+            {
+              "for": {
+                "in": "x_desc"
+              }
+            },
+            {
+              "for": {
+                "in": "x_time"
+              }
+            },
+            {
+              "for": {
+                "in": "x_color"
               }
             }
           ]
