@@ -7,21 +7,20 @@ import { useStore } from '@nanostores/preact'
 
 import { vizConfig, vizData } from '../store/powerBI'
 
-export interface MapProps extends ComponentProps<'svg'> {
+export interface MapChartProps extends ComponentProps<'svg'> {
   /** [x1, y1, x2, y2] where x1, y1 is top left, x2, y2 is bottom right */
   zoomRect?: [number, number, number, number]
-  imgUrl?: string
+  imgUrl: string
 }
 
-function Map({ zoomRect, imgUrl, ...props }: MapProps) {
+export default function MapChart({
+  zoomRect,
+  imgUrl,
+  ...props
+}: MapChartProps) {
   try {
     const dataView = useStore(vizData)
     const settings = useStore(vizConfig)
-
-    // use placeholder if no img given
-    const imgSrc =
-      imgUrl ??
-      'https://upload.wikimedia.org/wikipedia/commons/6/6f/World_Map.svg'
 
     const graphRef = useRef<SVGSVGElement>(null)
 
@@ -54,13 +53,16 @@ function Map({ zoomRect, imgUrl, ...props }: MapProps) {
         .attr('fill', 'yellow')
 
       g.append('image')
-        .attr('href', imgSrc)
+        .attr('href', imgUrl)
         .attr('x', '80')
         .attr('y', '45')
         .attr('width', '1120')
         .attr('height', '630')
 
-      const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
+      const zoom = d3
+        .zoom<SVGGElement, unknown>()
+        .scaleExtent([1, 8])
+        .on('zoom', zoomed)
       g.call(zoom)
       svg.on('click', reset)
 
@@ -77,7 +79,7 @@ function Map({ zoomRect, imgUrl, ...props }: MapProps) {
       function zoomed({ transform }) {
         g.attr('transform', transform).attr('stroke-width', 1 / transform.k)
       }
-    }, [graphRef.current, imgSrc])
+    }, [graphRef.current, imgUrl])
 
     return <svg ref={graphRef} viewBox='0 0 1280 720' {...props}></svg>
   } catch (e) {
@@ -85,5 +87,3 @@ function Map({ zoomRect, imgUrl, ...props }: MapProps) {
     throw e
   }
 }
-
-export default Map

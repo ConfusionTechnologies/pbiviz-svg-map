@@ -7,7 +7,7 @@ export default function Debug() {
 
   return (
     <div tw='flex flex-col h-full'>
-      <h2 tw='text-lg'>Debug</h2>
+      <h2 tw='text-2xl'>Debug</h2>
       <div tw='overflow(y-auto x-hidden) text-sm'>
         {logs.map(({ timestamp, type, msg }, i) => (
           <p

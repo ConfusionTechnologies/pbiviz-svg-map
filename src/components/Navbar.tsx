@@ -27,7 +27,7 @@ export default function Navbar({
         return (
           <div tw='relative group'>
             <button
-              tw='rounded border-black border p-0.5'
+              tw='rounded border-black border p-0.5 hover:bg-gray-100'
               onClick={() => setLocation(route)}
             >
               <RouteIcon />
