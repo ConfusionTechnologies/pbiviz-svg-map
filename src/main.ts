@@ -32,8 +32,10 @@ export class Visual implements IVisual {
   }
 
   update(options: VisualUpdateOptions) {
+    console.log('Updating')
     this.settings = VisualSettings.parse(options.dataViews[0]!)
     render(createElement(App, options), this.rootElem)
+    console.log('Updated')
   }
 
   enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions) {

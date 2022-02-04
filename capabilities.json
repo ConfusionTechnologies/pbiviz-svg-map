@@ -26,19 +26,6 @@
           ]
         }
       }
-    },
-    {
-      "table": {
-        "rows": {
-          "select": [
-            {
-              "for": {
-                "in": "coords"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "objects": {

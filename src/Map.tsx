@@ -29,73 +29,78 @@ export interface MapProps extends ComponentProps<'svg'> {
 }
 
 function Map({ opt, zoomRect, ...props }: MapProps) {
-  const dataView = opt.dataViews[0]
-  const settings: VisualSettings = VisualSettings.parse(dataView!)
-  const imgChunks = dataView?.table?.rows
-
-  // use placeholder if no img given
-  const imgUri =
-    imgChunks && imgChunks[0]
-      ? mergeImgChunks(imgChunks as any)
-      : 'https://upload.wikimedia.org/wikipedia/commons/6/6f/World_Map.svg'
-
-  const graphRef = useRef<SVGSVGElement>(null)
-
   try {
-    // Warning: it is [long, lat]
-    // I treat long as x & lat as y (makes sense when globe is upright)
-    const [x1, y1] = mgrs.toPoint(settings.map.topLeft)
-    const [x2, y2] = mgrs.toPoint(settings.map.btmRight)
+    const dataView = opt.dataViews[0]!
+    const settings = VisualSettings.parse<VisualSettings>(dataView)
+    const imgChunks = dataView?.table?.rows
+
+    // use placeholder if no img given
+    const imgUri =
+      imgChunks && imgChunks[0]
+        ? mergeImgChunks(imgChunks as any)
+        : 'https://upload.wikimedia.org/wikipedia/commons/6/6f/World_Map.svg'
+
+    const graphRef = useRef<SVGSVGElement>(null)
+
+    try {
+      // Warning: it is [long, lat]
+      // I treat long as x & lat as y (makes sense when globe is upright)
+      const [x1, y1] = mgrs.toPoint(settings.map.topLeft)
+      const [x2, y2] = mgrs.toPoint(settings.map.btmRight)
+    } catch (e) {
+      throw 'Invalid MGRS under Format > Map'
+    }
+
+    useLayoutEffect(() => {
+      const graphElem = graphRef.current
+      if (!graphElem) return
+      const svg = d3.select(graphElem)
+      svg.selectAll('*').remove()
+      const g = svg.append('g')
+
+      g.append('rect')
+        .attr('width', '100%')
+        .attr('height', '100%')
+        .attr('fill', 'white')
+
+      g.append('rect')
+        .attr('x', '80')
+        .attr('y', '45')
+        .attr('width', '1120')
+        .attr('height', '630')
+        .attr('fill', 'yellow')
+
+      g.append('image')
+        .attr('href', imgUri)
+        .attr('x', '80')
+        .attr('y', '45')
+        .attr('width', '1120')
+        .attr('height', '630')
+
+      const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
+      g.call(zoom)
+      svg.on('click', reset)
+
+      function reset() {
+        g.transition()
+          .duration(750)
+          .call(
+            zoom.transform,
+            d3.zoomIdentity,
+            d3.zoomTransform(g.node()!).invert([640, 360]),
+          )
+      }
+
+      function zoomed({ transform }) {
+        g.attr('transform', transform).attr('stroke-width', 1 / transform.k)
+      }
+    }, [graphRef.current])
+
+    return <svg ref={graphRef} viewBox='0 0 1280 720' {...props}></svg>
   } catch (e) {
-    throw 'Invalid MGRS under Format > Map'
+    console.error(e)
+    throw e
   }
-
-  useLayoutEffect(() => {
-    const graphElem = graphRef.current
-    if (!graphElem) return
-    const svg = d3.select(graphElem)
-    svg.selectAll('*').remove()
-    const g = svg.append('g')
-
-    g.append('rect')
-      .attr('width', '100%')
-      .attr('height', '100%')
-      .attr('fill', 'white')
-
-    g.append('rect')
-      .attr('x', '80')
-      .attr('y', '45')
-      .attr('width', '1120')
-      .attr('height', '630')
-      .attr('fill', 'yellow')
-
-    g.append('image')
-      .attr('href', imgUri)
-      .attr('x', '80')
-      .attr('y', '45')
-      .attr('width', '1120')
-      .attr('height', '630')
-
-    const zoom = d3.zoom().scaleExtent([1, 8]).on('zoom', zoomed)
-    g.call(zoom)
-    svg.on('click', reset)
-
-    function reset() {
-      g.transition()
-        .duration(750)
-        .call(
-          zoom.transform,
-          d3.zoomIdentity,
-          d3.zoomTransform(g.node()!).invert([640, 360]),
-        )
-    }
-
-    function zoomed({ transform }) {
-      g.attr('transform', transform).attr('stroke-width', 1 / transform.k)
-    }
-  }, [graphRef.current])
-
-  return <svg ref={graphRef} viewBox='0 0 1280 720' {...props}></svg>
 }
 
 export default Map
