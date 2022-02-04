@@ -26,19 +26,18 @@ export interface MapProps extends ComponentProps<'svg'> {
   opt: VisualUpdateOptions
   /** [x1, y1, x2, y2] where x1, y1 is top left, x2, y2 is bottom right */
   zoomRect?: [number, number, number, number]
+  imgUrl?: string
 }
 
-function Map({ opt, zoomRect, ...props }: MapProps) {
+function Map({ opt, zoomRect, imgUrl, ...props }: MapProps) {
   try {
     const dataView = opt.dataViews[0]!
     const settings = VisualSettings.parse<VisualSettings>(dataView)
-    const imgChunks = dataView?.table?.rows
 
     // use placeholder if no img given
-    const imgUri =
-      imgChunks && imgChunks[0]
-        ? mergeImgChunks(imgChunks as any)
-        : 'https://upload.wikimedia.org/wikipedia/commons/6/6f/World_Map.svg'
+    const imgSrc =
+      imgUrl ??
+      'https://upload.wikimedia.org/wikipedia/commons/6/6f/World_Map.svg'
 
     const graphRef = useRef<SVGSVGElement>(null)
 
@@ -71,7 +70,7 @@ function Map({ opt, zoomRect, ...props }: MapProps) {
         .attr('fill', 'yellow')
 
       g.append('image')
-        .attr('href', imgUri)
+        .attr('href', imgSrc)
         .attr('x', '80')
         .attr('y', '45')
         .attr('width', '1120')
