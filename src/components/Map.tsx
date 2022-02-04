@@ -5,7 +5,7 @@ import { ComponentProps } from 'preact'
 import { useLayoutEffect, useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 
-import { vizConfig, vizData } from './store/powerBI'
+import { vizConfig, vizData } from '../store/powerBI'
 
 export interface MapProps extends ComponentProps<'svg'> {
   /** [x1, y1, x2, y2] where x1, y1 is top left, x2, y2 is bottom right */

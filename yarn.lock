@@ -4237,7 +4237,6 @@ __metadata:
     tslib: ^2.3.1
     twind: ^0.16.16
     typescript: ^4.5.5
-    wouter-preact: ^2.8.0-alpha.2
   dependenciesMeta:
     prettier:
       optional: true
@@ -5751,15 +5750,6 @@ __metadata:
   dependencies:
     string-width: ^1.0.2 || 2 || 3 || 4
   checksum: d5fc37cd561f9daee3c80e03b92ed3e84d80dde3365a8767263d03dacfc8fa06b065ffe1df00d8c2a09f731482fcacae745abfbb478d4af36d0a891fad4834d3
-  languageName: node
-  linkType: hard
-
-"wouter-preact@npm:^2.8.0-alpha.2":
-  version: 2.8.0-alpha.2
-  resolution: "wouter-preact@npm:2.8.0-alpha.2"
-  peerDependencies:
-    preact: ^10.0.0
-  checksum: 81af1bbfcf8eecd69a6332411952fc6d964629ab8627865481fa2edd0e10c4db93f7da15973163a620427aac6ab54be80f94b08a856980c242a666cb12773c33
   languageName: node
   linkType: hard
 

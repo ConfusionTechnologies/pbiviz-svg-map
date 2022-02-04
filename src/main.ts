@@ -9,6 +9,7 @@ import { createElement, render } from 'preact'
 import { setup as setupTwind } from '@twind/preact'
 
 import App from './App'
+import { injectConsole } from './consoleInjector'
 import { VisualSettings } from './settings'
 import { vizData, vizConfig } from './store/powerBI'
 
@@ -17,6 +18,7 @@ export class Visual implements IVisual {
   private settings?: VisualSettings
 
   constructor(options: VisualConstructorOptions) {
+    injectConsole()
     this.rootElem = options.element
     setupTwind({
       props: {
