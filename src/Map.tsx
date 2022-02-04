@@ -8,20 +8,6 @@ import mgrs from 'mgrs'
 
 import { VisualSettings } from './settings'
 
-function checkOrder(
-  rows: [number, string][] | [string, number][],
-): rows is [number, string][] {
-  return typeof rows[0]![0] === 'number'
-}
-
-function mergeImgChunks(rows: [number, string][] | [string, number][]) {
-  const i = +!checkOrder(rows)
-  return rows
-    .sort((a, b) => a[i] - b[i])
-    .map((c) => c[+!i])
-    .join('')
-}
-
 export interface MapProps extends ComponentProps<'svg'> {
   opt: VisualUpdateOptions
   /** [x1, y1, x2, y2] where x1, y1 is top left, x2, y2 is bottom right */
@@ -93,7 +79,7 @@ function Map({ opt, zoomRect, imgUrl, ...props }: MapProps) {
       function zoomed({ transform }) {
         g.attr('transform', transform).attr('stroke-width', 1 / transform.k)
       }
-    }, [graphRef.current])
+    }, [graphRef.current, imgSrc])
 
     return <svg ref={graphRef} viewBox='0 0 1280 720' {...props}></svg>
   } catch (e) {
