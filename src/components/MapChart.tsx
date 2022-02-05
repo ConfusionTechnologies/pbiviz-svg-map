@@ -121,7 +121,7 @@ export default function MapChart({
       .attr('r', (d) => (d.size ?? 5) * getPltCfg().sizeFactor)
       .attr('fill', (d) => d.color ?? getPltCfg().fallbackColor)
       .append('svg:title')
-      .text((d) => d.desc ?? 'no description')
+      .text((d) => `${d.location}: ${d.desc ?? 'no description'}`)
 
     gPlot
       .selectAll('text')
