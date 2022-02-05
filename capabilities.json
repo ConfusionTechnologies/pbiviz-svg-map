@@ -96,6 +96,60 @@
           }
         }
       }
+    },
+    "plot": {
+      "displayName": "Plot",
+      "properties": {
+        "scalePoints": {
+          "displayName": "Scale Points",
+          "type": {
+            "bool": true
+          }
+        },
+        "fallbackColor": {
+          "displayName": "Fallback Point Color",
+          "type": {
+            "text": true
+          }
+        },
+        "numXTicks": {
+          "displayName": "Number of X Ticks",
+          "type": {
+            "numeric": true
+          }
+        },
+        "numYTicks": {
+          "displayName": "Number of Y Ticks",
+          "type": {
+            "numeric": true
+          }
+        },
+        "tickSize": {
+          "displayName": "Tick text size",
+          "type": {
+            "numeric": true
+          }
+        },
+
+        "labelSize": {
+          "displayName": "Label text size",
+          "type": {
+            "numeric": true
+          }
+        },
+        "gridOpacity": {
+          "displayName": "Grid opacity",
+          "type": {
+            "numeric": true
+          }
+        },
+        "sizeFactor": {
+          "displayName": "Rescale size",
+          "type": {
+            "numeric": true
+          }
+        }
+      }
     }
   },
   "supportsLandingPage": true,

@@ -1,38 +1,15 @@
 import * as d3 from 'd3'
-import mgrs from 'mgrs'
 
 import { ComponentProps } from 'preact'
 import { useLayoutEffect, useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 
-import { plotData, processedData, vizConfig, vizData } from '../store/powerBI'
-import { VisualSettings } from '../settings'
+import { plotData, processedData, getPltCfg, mapBounds } from '../store/powerBI'
 
 const SVG_H = 720 as const
 const SVG_W = 1280 as const
-const SVG_R = SVG_H / SVG_W
-// ticks shall be constant till i figure out what exactly is going on
-const SVG_T = 12
-const DEFAULT_SIZE = 10
 
-function getMapBounds(
-  settings: VisualSettings,
-): [number, number, number, number] {
-  try {
-    // Warning: it is [long, lat]
-    // Note: treating long as x & lat as y (makes sense when globe is upright)
-    const [x1, y1] = mgrs.toPoint(settings.map.topLeft)
-    const [x2, y2] = mgrs.toPoint(settings.map.btmRight)
-    return [
-      Math.min(x1, x2), // Xmin
-      Math.min(y1, y2), // Ymin
-      Math.max(x1, x2), // Xmax
-      Math.max(y1, y2), // Ymax
-    ]
-  } catch (e) {
-    throw 'Invalid MGRS under Format > Map'
-  }
-}
+const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length
 
 function getScales([x1, y1, x2, y2]: [number, number, number, number]) {
   const x = d3.scaleLinear().domain([x1, x2]).range([0, SVG_W])
@@ -46,7 +23,8 @@ function drawXAxis(
 ) {
   return g
     .attr('transform', `translate(0,${SVG_H})`)
-    .call(d3.axisTop(x).ticks(SVG_T))
+    .attr('font-size', getPltCfg().tickSize)
+    .call(d3.axisTop(x).ticks(getPltCfg().numXTicks))
     .call((g) => g.select('.domain').attr('display', 'none'))
 }
 
@@ -55,7 +33,8 @@ function drawYAxis(
   y: d3.ScaleLinear<number, number>,
 ) {
   return g
-    .call(d3.axisRight(y).ticks(SVG_T * SVG_R))
+    .attr('font-size', getPltCfg().tickSize)
+    .call(d3.axisRight(y).ticks(getPltCfg().numYTicks))
     .call((g) => g.select('.domain').attr('display', 'none'))
 }
 
@@ -66,11 +45,11 @@ function drawGrid(
 ) {
   return g
     .attr('stroke', 'currentColor')
-    .attr('stroke-opacity', 0.1)
+    .attr('stroke-opacity', getPltCfg().gridOpacity)
     .call((g) =>
       g
         .selectAll('.x')
-        .data(x.ticks(SVG_T))
+        .data(x.ticks(getPltCfg().numXTicks))
         .join(
           (enter) => enter.append('line').attr('class', 'x').attr('y2', SVG_H),
           (update) => update,
@@ -82,7 +61,7 @@ function drawGrid(
     .call((g) =>
       g
         .selectAll('.y')
-        .data(y.ticks(SVG_T * SVG_R))
+        .data(y.ticks(getPltCfg().numYTicks))
         .join(
           (enter) => enter.append('line').attr('class', 'y').attr('x2', SVG_W),
           (update) => update,
@@ -105,8 +84,7 @@ export default function MapChart({
   ...props
 }: MapChartProps) {
   const data = useStore(processedData)
-  const settings = useStore(vizConfig)
-  const [bx1, by1, bx2, by2] = getMapBounds(settings)
+  const [bx1, by1, bx2, by2] = mapBounds.get()
 
   const graphRef = useRef<SVGSVGElement>(null)
 
@@ -130,21 +108,37 @@ export default function MapChart({
     const gGrid = svg.append('g')
 
     gPlot
+      .attr('font-family', 'sans-serif')
+      .attr('text-anchor', 'middle')
+      .attr('font-weight', 'bold')
+
+    gPlot
       .selectAll('circle')
       .data(data)
       .join('circle')
       .attr('cx', (d) => x(d.long))
       .attr('cy', (d) => y(d.lat))
-      .attr('r', (d) => 20)
-      .attr('fill', (d) => d.color ?? 'red')
+      .attr('r', (d) => (d.size ?? 5) * getPltCfg().sizeFactor)
+      .attr('fill', (d) => d.color ?? getPltCfg().fallbackColor)
+      .append('svg:title')
+      .text((d) => d.desc ?? 'no description')
+
+    gPlot
+      .selectAll('text')
+      .data(data)
+      .join('text')
+      .attr('stroke', 'white')
+      .attr('x', (d) => x(d.long))
+      .attr('y', (d) => y(d.lat))
+      .text((d) => d.name ?? '')
 
     gMap
       .append('image')
       .attr('href', imgUrl)
       .attr('x', x(bx1))
       .attr('y', y(by1))
-      .attr('width', x(bx2 - bx1))
-      .attr('height', y(by2 - by1))
+      .attr('width', x(bx2) - x(bx1))
+      .attr('height', y(by2) - y(by1))
       .attr('preserveAspectRatio', 'none')
 
     const zoom = d3
@@ -155,14 +149,38 @@ export default function MapChart({
     svg.on('click', reset)
 
     function reset() {
-      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
+      const longs = data.map((d) => d.long)
+      const lats = data.map((d) => d.lat)
+      const [cx, cy] = [average(longs), average(lats)]
+      svg.call(zoom.translateTo, x(cx), y(cy)).call(zoom.scaleTo, 1)
     }
 
     function zoomed({ transform }) {
       const zx = transform.rescaleX(x).interpolate(d3.interpolateRound)
       const zy = transform.rescaleY(y).interpolate(d3.interpolateRound)
-      gPlot.attr('transform', transform)
-      gPlot.selectAll('circle').attr('r', (d: plotData) => 20 / transform.k)
+
+      gPlot
+        .attr('transform', transform)
+        .attr('font-size', getPltCfg().labelSize / transform.k)
+      gPlot
+        .selectAll('circle')
+        .attr(
+          'r',
+          (d: plotData) =>
+            ((d.size ?? 5) * getPltCfg().sizeFactor) /
+            (getPltCfg().scalePoints ? transform.k : 1),
+        )
+      gPlot
+        .selectAll('text')
+        .attr(
+          'y',
+          (d: plotData) =>
+            y(d.lat) -
+            ((d.size ?? 5) * getPltCfg().sizeFactor) /
+              (getPltCfg().scalePoints ? transform.k : 1),
+        )
+        .attr('stroke-width', 2 / transform.k)
+
       gMap.attr('transform', transform)
       gx.call(drawXAxis, zx)
       gy.call(drawYAxis, zy)
@@ -170,6 +188,7 @@ export default function MapChart({
     }
 
     svg.call(zoom).call(zoom.transform, d3.zoomIdentity)
+    reset()
   }, [
     graphRef.current,
     imgUrl,

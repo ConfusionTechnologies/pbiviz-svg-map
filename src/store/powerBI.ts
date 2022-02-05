@@ -12,6 +12,26 @@ import { VisualSettings } from '../settings'
 export const vizConfig = atom<VisualSettings>()
 export const vizData = atom<powerbi.DataView>()
 
+export const plotConfig = computed(vizConfig, (d) => d.plot)
+export const getPltCfg = plotConfig.get
+
+export const mapBounds = computed(vizConfig, (cfg) => {
+  try {
+    // Warning: it is [long, lat]
+    // Note: treating long as x & lat as y (makes sense when globe is upright)
+    const [x1, y1] = mgrs.toPoint(cfg.map.topLeft)
+    const [x2, y2] = mgrs.toPoint(cfg.map.btmRight)
+    return [
+      Math.min(x1, x2), // Xmin
+      Math.min(y1, y2), // Ymin
+      Math.max(x1, x2), // Xmax
+      Math.max(y1, y2), // Ymax
+    ] as const
+  } catch (e) {
+    throw 'Invalid MGRS under Format > Map'
+  }
+})
+
 export interface plotData {
   name?: string
   location: string
