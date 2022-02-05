@@ -179,7 +179,7 @@ export default function MapChart({
             ((d.size ?? 5) * getPltCfg().sizeFactor) /
               (getPltCfg().scalePoints ? transform.k : 1),
         )
-        .attr('stroke-width', 2 / transform.k)
+        .attr('stroke-width', 0.5 / transform.k)
 
       gMap.attr('transform', transform)
       gx.call(drawXAxis, zx)
