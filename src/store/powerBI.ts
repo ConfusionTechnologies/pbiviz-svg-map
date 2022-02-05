@@ -13,14 +13,14 @@ export const vizConfig = atom<VisualSettings>()
 export const vizData = atom<powerbi.DataView>()
 
 export interface plotData {
-  name: string
+  name?: string
   location: string
   lat: number
   long: number
-  size: number
-  desc: string
-  time: string
-  color: string
+  size?: number
+  desc?: string
+  time?: string
+  color?: string
 }
 
 const map = {

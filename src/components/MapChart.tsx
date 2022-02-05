@@ -5,7 +5,7 @@ import { ComponentProps } from 'preact'
 import { useLayoutEffect, useRef } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 
-import { vizConfig, vizData } from '../store/powerBI'
+import { plotData, processedData, vizConfig, vizData } from '../store/powerBI'
 import { VisualSettings } from '../settings'
 
 const SVG_H = 720 as const
@@ -13,6 +13,7 @@ const SVG_W = 1280 as const
 const SVG_R = SVG_H / SVG_W
 // ticks shall be constant till i figure out what exactly is going on
 const SVG_T = 12
+const DEFAULT_SIZE = 10
 
 function getMapBounds(
   settings: VisualSettings,
@@ -33,32 +34,38 @@ function getMapBounds(
   }
 }
 
-function getD3Scales([x1, y1, x2, y2]: [number, number, number, number]) {
+function getScales([x1, y1, x2, y2]: [number, number, number, number]) {
   const x = d3.scaleLinear().domain([x1, x2]).range([0, SVG_W])
   const y = d3.scaleLinear().domain([y1, y2]).range([0, SVG_H])
   return [x, y] as const
 }
 
-function drawD3Axes(
+function drawXAxis(
   g: d3.Selection<SVGGElement, any, any, any>,
   x: d3.ScaleLinear<number, number>,
-  y: d3.ScaleLinear<number, number>,
 ) {
-  g.attr('transform', `translate(0,${SVG_H})`)
+  return g
+    .attr('transform', `translate(0,${SVG_H})`)
     .call(d3.axisTop(x).ticks(SVG_T))
     .call((g) => g.select('.domain').attr('display', 'none'))
-
-  g.call(d3.axisRight(y).ticks(SVG_T * SVG_R)).call((g) =>
-    g.select('.domain').attr('display', 'none'),
-  )
 }
 
-function drawD3Grid(
+function drawYAxis(
+  g: d3.Selection<SVGGElement, any, any, any>,
+  y: d3.ScaleLinear<number, number>,
+) {
+  return g
+    .call(d3.axisRight(y).ticks(SVG_T * SVG_R))
+    .call((g) => g.select('.domain').attr('display', 'none'))
+}
+
+function drawGrid(
   g: d3.Selection<SVGGElement, any, any, any>,
   x: d3.ScaleLinear<number, number>,
   y: d3.ScaleLinear<number, number>,
 ) {
-  g.attr('stroke', 'currentColor')
+  return g
+    .attr('stroke', 'currentColor')
     .attr('stroke-opacity', 0.1)
     .call((g) =>
       g
@@ -97,10 +104,9 @@ export default function MapChart({
   imgUrl,
   ...props
 }: MapChartProps) {
-  const dataView = useStore(vizData)
+  const data = useStore(processedData)
   const settings = useStore(vizConfig)
-
-  console.log(dataView)
+  const [bx1, by1, bx2, by2] = getMapBounds(settings)
 
   const graphRef = useRef<SVGSVGElement>(null)
 
@@ -111,50 +117,67 @@ export default function MapChart({
     // rerendering; clear whatever may be there currently
     svg.selectAll('*').remove()
 
-    const gGrid = svg.append('g')
-    const gPlot = svg
-      .append('g')
-      .attr('fill', 'none')
-      .attr('stroke-linecap', 'round')
+    const [x, y] = getScales([bx1, by1, bx2, by2])
+    // holds map
     const gMap = svg.append('g')
+    // holds plotted points
+    const gPlot = svg.append('g')
+    // holds x-axis
+    const gx = svg.append('g')
+    // holds y-axis
+    const gy = svg.append('g')
+    // holds grid
+    const gGrid = svg.append('g')
 
-    gMap
-      .append('rect')
-      .attr('width', '100%')
-      .attr('height', '100%')
-      .attr('fill', 'white')
-
-    gMap
-      .append('rect')
-      .attr('x', SVG_W * 0.1)
-      .attr('y', SVG_H * 0.1)
-      .attr('width', SVG_W * 0.8)
-      .attr('height', SVG_H * 0.8)
-      .attr('fill', 'yellow')
+    gPlot
+      .selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', (d) => x(d.long))
+      .attr('cy', (d) => y(d.lat))
+      .attr('r', (d) => 20)
+      .attr('fill', (d) => d.color ?? 'red')
 
     gMap
       .append('image')
       .attr('href', imgUrl)
-      .attr('x', SVG_W * 0.1)
-      .attr('y', SVG_H * 0.1)
-      .attr('width', SVG_W * 0.8)
-      .attr('height', SVG_H * 0.8)
+      .attr('x', x(bx1))
+      .attr('y', y(by1))
+      .attr('width', x(bx2 - bx1))
+      .attr('height', y(by2 - by1))
+      .attr('preserveAspectRatio', 'none')
 
     const zoom = d3
-      .zoom<SVGGElement, any>()
+      .zoom<SVGSVGElement, any>()
       .scaleExtent([1, 8])
       .on('zoom', zoomed)
-    gMap.call(zoom)
+
     svg.on('click', reset)
 
     function reset() {
-      gMap.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
+      svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity)
     }
 
     function zoomed({ transform }) {
-      gMap.attr('transform', transform).attr('stroke-width', 1 / transform.k)
+      const zx = transform.rescaleX(x).interpolate(d3.interpolateRound)
+      const zy = transform.rescaleY(y).interpolate(d3.interpolateRound)
+      gPlot.attr('transform', transform)
+      gPlot.selectAll('circle').attr('r', (d: plotData) => 20 / transform.k)
+      gMap.attr('transform', transform)
+      gx.call(drawXAxis, zx)
+      gy.call(drawYAxis, zy)
+      gGrid.call(drawGrid, zx, zy)
     }
-  }, [graphRef.current, imgUrl])
+
+    svg.call(zoom).call(zoom.transform, d3.zoomIdentity)
+  }, [
+    graphRef.current,
+    imgUrl,
+    data
+      .map((d) => d.name)
+      .sort()
+      .join(''),
+  ])
 
   return <svg ref={graphRef} viewBox={`0 0 ${SVG_W} ${SVG_H}`} {...props}></svg>
 }
