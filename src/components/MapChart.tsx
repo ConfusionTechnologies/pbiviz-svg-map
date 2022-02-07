@@ -143,7 +143,7 @@ export default function MapChart({
 
     const zoom = d3
       .zoom<SVGSVGElement, any>()
-      .scaleExtent([1, 8])
+      .scaleExtent([1, Infinity])
       .on('zoom', zoomed)
 
     svg.on('click', reset)
