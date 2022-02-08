@@ -1,6 +1,6 @@
 {
   "name": "pbiviz-svg-map",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "currently just scatterplot with axis-scaling backdrop",
   "repository": "https://github.com/interpause/pbiviz-svg-map",
   "author": "John-Henry Lim <hyphen@interpause.dev>",
@@ -16,7 +16,7 @@
     "d3": "^7.3.0",
     "mgrs": "^1.0.0",
     "nanostores": "^0.5.10",
-    "powerbi-visuals-api": "3.2",
+    "powerbi-visuals-api": "3.8",
     "powerbi-visuals-utils-dataviewutils": "2.2.1",
     "preact": "^10.6.5",
     "preact-feather": "^4.2.1",

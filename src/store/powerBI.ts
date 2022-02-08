@@ -67,7 +67,8 @@ export const processedData = computed(vizData, (data): plotData[] => {
       obj[mappedColName] = v
       if (mappedColName == 'location') {
         try {
-          ;[obj['long'], obj['lat']] = mgrs.toPoint(v)
+          const mgrsStr = (v as string).replace(/\s+/g, '').toUpperCase()
+          ;[obj['long'], obj['lat']] = mgrs.toPoint(mgrsStr)
         } catch (e) {
           console.error(`Table ${row_i} MGRS coordinate invalid`)
         }

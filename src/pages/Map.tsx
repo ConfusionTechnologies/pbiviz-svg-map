@@ -7,7 +7,7 @@ export default function Map() {
 
   return (
     <div tw='h-full w-full'>
-      <MapChart imgUrl={imgUrl}></MapChart>
+      <MapChart imgUrl={imgUrl} preserveAspectRatio='XMidYmid meet'></MapChart>
     </div>
   )
 }

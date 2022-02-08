@@ -152,5 +152,6 @@
       }
     }
   },
-  "supportsLandingPage": true
+  "supportsLandingPage": true,
+  "supportsEmptyDataView": true
 }

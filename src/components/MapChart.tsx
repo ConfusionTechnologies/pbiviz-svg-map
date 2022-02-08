@@ -13,7 +13,7 @@ const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length
 
 function getScales([x1, y1, x2, y2]: [number, number, number, number]) {
   const x = d3.scaleLinear().domain([x1, x2]).range([0, SVG_W])
-  const y = d3.scaleLinear().domain([y1, y2]).range([0, SVG_H])
+  const y = d3.scaleLinear().domain([y2, y1]).range([0, SVG_H])
   return [x, y] as const
 }
 
@@ -136,14 +136,14 @@ export default function MapChart({
       .append('image')
       .attr('href', imgUrl)
       .attr('x', x(bx1))
-      .attr('y', y(by1))
-      .attr('width', x(bx2) - x(bx1))
-      .attr('height', y(by2) - y(by1))
+      .attr('y', y(by2))
+      .attr('width', Math.abs(x(bx2) - x(bx1)))
+      .attr('height', Math.abs(y(by2) - y(by1)))
       .attr('preserveAspectRatio', 'none')
 
     const zoom = d3
       .zoom<SVGSVGElement, any>()
-      .scaleExtent([1, Infinity])
+      .scaleExtent([0, Infinity])
       .on('zoom', zoomed)
 
     svg.on('click', reset)
@@ -187,7 +187,7 @@ export default function MapChart({
       gGrid.call(drawGrid, zx, zy)
     }
 
-    svg.call(zoom).call(zoom.transform, d3.zoomIdentity)
+    svg.call(zoom)
     reset()
   }, [
     graphRef.current,

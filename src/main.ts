@@ -18,7 +18,7 @@ export class Visual implements IVisual {
   private settings?: VisualSettings
 
   constructor(options: VisualConstructorOptions) {
-    //injectConsole()
+    injectConsole()
     this.rootElem = options.element
     setupTwind({
       props: {

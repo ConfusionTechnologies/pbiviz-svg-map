@@ -4228,7 +4228,7 @@ __metadata:
     d3: ^7.3.0
     mgrs: ^1.0.0
     nanostores: ^0.5.10
-    powerbi-visuals-api: 3.2
+    powerbi-visuals-api: 3.8
     powerbi-visuals-tools: ^4.0.4
     powerbi-visuals-utils-dataviewutils: 2.2.1
     preact: ^10.6.5
@@ -4360,12 +4360,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"powerbi-visuals-api@npm:3.2":
-  version: 3.2.0
-  resolution: "powerbi-visuals-api@npm:3.2.0"
+"powerbi-visuals-api@npm:3.8":
+  version: 3.8.4
+  resolution: "powerbi-visuals-api@npm:3.8.4"
   dependencies:
-    semver: ^7.3.2
-  checksum: 0b4d42a19772471ad7f604e37e7afd1a22600d65af4c79a55b3e63c69a8b91f710843f0430be989db389a89be604b81bd2f6ba318c4e982878bcb8c16b372fd1
+    semver: ^7.3.5
+  checksum: e84833ad1faf939a25765d14ea0022c671df8842e6498f2b646d8d2a667603f61666c4b59de03865ff327caccb5fb801df8cc1cd85c43356ecae1c1038b53b5d
   languageName: node
   linkType: hard
 
@@ -4817,7 +4817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5":
+"semver@npm:^7.3.4, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
   dependencies:
