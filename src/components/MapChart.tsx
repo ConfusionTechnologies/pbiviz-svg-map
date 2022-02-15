@@ -193,7 +193,7 @@ export default function MapChart({
     graphRef.current,
     imgUrl,
     data
-      .map((d) => d.name)
+      .map((d) => d.name ?? '')
       .sort()
       .join(''),
   ])
