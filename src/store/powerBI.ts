@@ -60,6 +60,7 @@ export const processedData = computed(vizData, (data): plotData[] => {
   }
   return table.rows.map((row, row_i) => {
     let obj = {}
+    let isValid = true
     row.forEach((v, i) => {
       // Fuck microsoft. Somehow their dataview utils dont do this either.
       const oriColName = Object.keys(table.columns[i]!.roles!)[0]!
@@ -71,9 +72,11 @@ export const processedData = computed(vizData, (data): plotData[] => {
           ;[obj['long'], obj['lat']] = mgrs.toPoint(mgrsStr)
         } catch (e) {
           console.error(`Table ${row_i} MGRS coordinate invalid`)
+          isValid = false
         }
       }
     })
+    if(!isValid) return false
     return obj as plotData
-  })
+  }).filter((o) => o)
 })
