@@ -58,25 +58,28 @@ export const processedData = computed(vizData, (data): plotData[] => {
     console.warn('Table is empty')
     return []
   }
-  return table.rows.map((row, row_i) => {
-    let obj = {}
-    let isValid = true
-    row.forEach((v, i) => {
-      // Fuck microsoft. Somehow their dataview utils dont do this either.
-      const oriColName = Object.keys(table.columns[i]!.roles!)[0]!
-      const mappedColName: string = map[oriColName]
-      obj[mappedColName] = v
-      if (mappedColName == 'location') {
-        try {
-          const mgrsStr = (v as string).replace(/\s+/g, '').toUpperCase()
-          ;[obj['long'], obj['lat']] = mgrs.toPoint(mgrsStr)
-        } catch (e) {
-          console.error(`Table ${row_i} MGRS coordinate invalid`)
-          isValid = false
+  const rows = table.rows
+    .map((row, row_i) => {
+      let obj = {}
+      let isValid = true
+      row.forEach((v, i) => {
+        // Fuck microsoft. Somehow their dataview utils dont do this either.
+        const oriColName = Object.keys(table.columns[i]!.roles!)[0]!
+        const mappedColName: string = map[oriColName]
+        obj[mappedColName] = v
+        if (mappedColName == 'location') {
+          try {
+            const mgrsStr = (v as string).replace(/\s+/g, '').toUpperCase()
+            ;[obj['long'], obj['lat']] = mgrs.toPoint(mgrsStr)
+          } catch (e) {
+            console.error(`Row ${row_i} discarded due to ${e}`)
+            isValid = false
+          }
         }
-      }
+      })
+      if (!isValid || obj['location'] == undefined) return false
+      return obj
     })
-    if(!isValid) return false
-    return obj as plotData
-  }).filter((o) => o)
+    .filter((o) => o) as plotData[]
+  return rows
 })

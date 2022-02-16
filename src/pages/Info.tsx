@@ -7,6 +7,7 @@ export default function Info() {
       <p>Mouse wheel to zoom</p>
       <p>Left-click anywhere to reset view</p>
       <p>Hover on plot circles to see their description</p>
+      <p>v0.1.2</p>
     </div>
   )
 }

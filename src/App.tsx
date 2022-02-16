@@ -33,12 +33,14 @@ export default function App() {
   //console.log(opt)
 
   const [location, setLocation] = useState('config')
-  const [error, resetError] = useErrorBoundary((error) => console.error(error))
+  const [error, resetError] = useErrorBoundary((error) => {
+    console.error(error)
+    setLocation('debug')
+  })
 
   useEffect(() => error && setTimeout(() => resetError(), 1000), [error])
 
   //translucent overlay or toast instead
-  if (error) return <p>{error}</p>
 
   return (
     <div tw='absolute inset-0 h-[100vh] w-[100vw]'>
@@ -47,6 +49,7 @@ export default function App() {
         options={NavOptions}
         hook={[location, setLocation]}
       ></Navbar>
+      {error ? <p>{error}</p> : null}
       {location === 'map' ? <MapPage /> : null}
       {location === 'info' ? <InfoPage /> : null}
       {location === 'debug' ? <DebugPage /> : null}

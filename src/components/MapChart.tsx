@@ -84,6 +84,11 @@ export default function MapChart({
   ...props
 }: MapChartProps) {
   const data = useStore(processedData)
+  if (data.length < 1) {
+    console.log(data)
+    throw 'Table is empty! (Check if location is set)'
+  }
+
   const [bx1, by1, bx2, by2] = mapBounds.get()
 
   const graphRef = useRef<SVGSVGElement>(null)
