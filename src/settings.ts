@@ -18,6 +18,7 @@ export class PlotSettings {
   tickSize: number = 12
   labelSize: number = 20
   gridOpacity: number = 0.1
+  pointOpacity: number = 0.5
 }
 
 export class VisualSettings extends DataViewObjectsParser {

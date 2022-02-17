@@ -84,14 +84,18 @@ export default function MapChart({
   ...props
 }: MapChartProps) {
   const data = useStore(processedData)
-  if (data.length < 1) {
-    console.log(data)
-    throw 'Table is empty! (Check if location is set)'
-  }
-
   const [bx1, by1, bx2, by2] = mapBounds.get()
-
   const graphRef = useRef<SVGSVGElement>(null)
+
+  if (data.length < 1) {
+    data.push({
+      name: 'Table is empty! (Check if location is set)',
+      location: 'undefined',
+      lat: average([by1, by2]),
+      long: average([bx1, bx2]),
+      size: 0,
+    })
+  }
 
   useLayoutEffect(() => {
     const graphElem = graphRef.current
@@ -125,6 +129,7 @@ export default function MapChart({
       .attr('cy', (d) => y(d.lat))
       .attr('r', (d) => (d.size ?? 5) * getPltCfg().sizeFactor)
       .attr('fill', (d) => d.color ?? getPltCfg().fallbackColor)
+      .attr('opacity', (d) => getPltCfg().pointOpacity)
       .append('svg:title')
       .text((d) => `${d.location}: ${d.desc ?? 'no description'}`)
 
@@ -194,14 +199,7 @@ export default function MapChart({
 
     svg.call(zoom)
     reset()
-  }, [
-    graphRef.current,
-    imgUrl,
-    data
-      .map((d) => d.name ?? '')
-      .sort()
-      .join(''),
-  ])
+  }, [graphRef.current, imgUrl, JSON.stringify(data)])
 
   return <svg ref={graphRef} viewBox={`0 0 ${SVG_W} ${SVG_H}`} {...props}></svg>
 }

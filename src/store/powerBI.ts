@@ -81,5 +81,6 @@ export const processedData = computed(vizData, (data): plotData[] => {
       return obj
     })
     .filter((o) => o) as plotData[]
+  console.debug(rows)
   return rows
 })

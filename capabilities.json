@@ -148,6 +148,12 @@
           "type": {
             "numeric": true
           }
+        },
+        "pointOpacity": {
+          "displayName": "Point opacity",
+          "type": {
+            "numeric": true
+          }
         }
       }
     }
