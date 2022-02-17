@@ -1,6 +1,6 @@
 {
   "name": "pbiviz-svg-map",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "currently just scatterplot with axis-scaling backdrop",
   "repository": "https://github.com/interpause/pbiviz-svg-map",
   "author": "John-Henry Lim <hyphen@interpause.dev>",
