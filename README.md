@@ -22,13 +22,3 @@ Click links below to find respective documentation. In order of decreasing signi
 ## Credits
 
 Initially developed by [@Interpause](https://github.com/Interpause).
-
-## Move into Issues for Tracking
-
-- Create custom webpack toolchain
-  - `pbiviz` has no interface for modifying build process
-  - Necessary to support Babel, with is needed for:
-    - `preact/compat`: Preact's compatibility layer for React's ecosystem
-    - `twin.macro`: More featureful, better maintained equivalent of Twind
-- User guide including documentation of data fields
-- Documentation & Developer guide
