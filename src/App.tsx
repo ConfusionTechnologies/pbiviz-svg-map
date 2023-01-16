@@ -1,16 +1,16 @@
 import { useEffect, useErrorBoundary, useState } from 'preact/hooks'
 
 import Navbar, { NavbarOptions } from './components/Navbar'
+import ConfigPage from './pages/Config'
 import DebugPage from './pages/Debug'
 import InfoPage from './pages/Info'
-import ConfigPage from './pages/Config'
 import MapPage from './pages/Map'
 
 const NavOptions: NavbarOptions = [
   {
     icon: 'Globe',
     route: 'map',
-    tip: 'Nice map',
+    tip: 'View map',
   },
   {
     icon: 'Settings',
@@ -45,7 +45,7 @@ export default function App() {
   return (
     <div tw='absolute inset-0 h-[100vh] w-[100vw]'>
       <Navbar
-        tw='absolute right-1 top-16 opacity-10 hover:opacity-100 transition-opacity'
+        tw='absolute right-1 top-16 opacity-0 hover:opacity-100 transition-opacity'
         options={NavOptions}
         hook={[location, setLocation]}
       ></Navbar>

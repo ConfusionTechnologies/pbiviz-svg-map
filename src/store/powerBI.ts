@@ -1,8 +1,20 @@
+import mgrs from 'mgrs'
 import { atom, computed } from 'nanostores'
 import powerbi from 'powerbi-visuals-api'
-import mgrs from 'mgrs'
 
 import { VisualSettings } from '../settings'
+
+function strToLongLat(s: string): [number, number] {
+  const match = [...s.matchAll(/^(?<long>\d+\.\d+), ?(?<lat>\d+\.\d+)$/g)]
+  if (match.length > 0) {
+    const { long, lat } = match[0]!.groups!
+    return [parseFloat(long!), parseFloat(lat!)]
+  } else {
+    // ^\d[a-zA-Z]{3}\d{10}$
+    const mgrsStr = s.replace(/\s+/g, '').toUpperCase()
+    return mgrs.toPoint(mgrsStr)
+  }
+}
 
 //https://github.com/nanostores/nanostores?ref=bestofvue.com#atoms
 //you can use atoms for objects too if only allow replacing the whole object
@@ -19,8 +31,8 @@ export const mapBounds = computed(vizConfig, (cfg) => {
   try {
     // Warning: it is [long, lat]
     // Note: treating long as x & lat as y (makes sense when globe is upright)
-    const [x1, y1] = mgrs.toPoint(cfg.map.topLeft)
-    const [x2, y2] = mgrs.toPoint(cfg.map.btmRight)
+    const [x1, y1] = strToLongLat(cfg.map.topLeft)
+    const [x2, y2] = strToLongLat(cfg.map.btmRight)
     return [
       Math.min(x1, x2), // Xmin
       Math.min(y1, y2), // Ymin
@@ -69,8 +81,7 @@ export const processedData = computed(vizData, (data): plotData[] => {
         obj[mappedColName] = v
         if (mappedColName == 'location') {
           try {
-            const mgrsStr = (v as string).replace(/\s+/g, '').toUpperCase()
-            ;[obj['long'], obj['lat']] = mgrs.toPoint(mgrsStr)
+            ;[obj['long'], obj['lat']] = strToLongLat(v.toString())
           } catch (e) {
             console.error(`Row ${row_i} discarded due to ${e}`)
             isValid = false

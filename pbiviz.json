@@ -4,7 +4,7 @@
     "displayName": "SVGMap",
     "guid": "SVGMap1E451ED4D8324E2B9CB3AFD0C5077CEA",
     "visualClassName": "Visual",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "currently just scatterplot with axis-scaling backdrop",
     "supportUrl": "https://interpause.dev/powerbi",
     "gitHubUrl": "https://github.com/interpause/pbiviz-svg-map"

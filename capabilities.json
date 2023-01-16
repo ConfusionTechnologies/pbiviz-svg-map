@@ -82,15 +82,15 @@
       "displayName": "Map",
       "properties": {
         "topLeft": {
-          "displayName": "Top Left MGRS",
-          "description": "Top Left MGRS",
+          "displayName": "Top Left Point (MGRS/LongLat)",
+          "description": "Top Left Point (MGRS/LongLat)",
           "type": {
             "text": true
           }
         },
         "btmRight": {
-          "displayName": "Bottom Right MGRS",
-          "description": "Bottom Right MGRS",
+          "displayName": "Bottom Right Point (MGRS/LongLat)",
+          "description": "Bottom Right Point (MGRS/LongLat)",
           "type": {
             "text": true
           }

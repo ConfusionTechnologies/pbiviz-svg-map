@@ -15,10 +15,6 @@ Click links below to find respective documentation. In order of decreasing signi
 5. [Wouter](https://github.com/molefrog/wouter): Minimalist page routing system
 6. [Preact-Feather](https://github.com/ForsakenHarmony/preact-feather): Icon library
 
-## Current Maintainers
-
-- [@Interpause](https://github.com/Interpause)
-
 ## Credits
 
 Initially developed by [@Interpause](https://github.com/Interpause).
