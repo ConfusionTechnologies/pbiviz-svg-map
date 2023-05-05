@@ -6,8 +6,8 @@ import { useStore } from '@nanostores/preact'
 
 import { plotData, processedData, getPltCfg, mapBounds } from '../store/powerBI'
 
-const SVG_H = 720 as const
-const SVG_W = 1280 as const
+const SVG_H = 7200 as const
+const SVG_W = 12800 as const
 
 const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length
 
